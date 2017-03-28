@@ -18,7 +18,7 @@
 
 import logging
 
-def setup_logger(level_string, log_file, logger):
+def setup_logger(level_string, log_file):
     numeric_level = getattr(logging, level_string.upper(), None)
     if not isinstance(numeric_level, int):
         raise ValueError("Invalid log level: {}".format(level_string))
@@ -27,7 +27,7 @@ def setup_logger(level_string, log_file, logger):
     file_formatter = verbose_formatter
     stdout_formatter = verbose_formatter if numeric_level == logging.DEBUG else logging.Formatter("[%(asctime)s] [%(levelname)s] %(message)s", "%H:%M:%S")
 
-    root_logger = logging.getLogger(logger)
+    root_logger = logging.getLogger()
     root_logger.setLevel(numeric_level)
 
     file_logger = logging.FileHandler(log_file)
@@ -37,8 +37,6 @@ def setup_logger(level_string, log_file, logger):
     stdout_logger = logging.StreamHandler()
     stdout_logger.setFormatter(stdout_formatter)
     root_logger.addHandler(stdout_logger)
-
-    return root_logger
 
 def get_logger(logger):
     return logging.getLogger(logger)
