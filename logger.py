@@ -17,6 +17,7 @@
 ###############################################################################
 
 import logging
+from time import gmtime
 
 def setup_logger(level_string, log_file):
     numeric_level = getattr(logging, level_string.upper(), None)
@@ -26,6 +27,9 @@ def setup_logger(level_string, log_file):
     verbose_formatter = logging.Formatter("[%(asctime)s] [%(name)s/%(levelname)s] %(message)s")
     file_formatter = verbose_formatter
     stdout_formatter = verbose_formatter if numeric_level == logging.DEBUG else logging.Formatter("[%(asctime)s] [%(levelname)s] %(message)s", "%H:%M:%S")
+
+    verbose_formatter.converter = gmtime
+    stdout_formatter.converter = gmtime
 
     root_logger = logging.getLogger()
     root_logger.setLevel(numeric_level)
