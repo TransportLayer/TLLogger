@@ -46,3 +46,6 @@ def setup_logger(level_string, log_file, no_file=False, no_stdout=False):
 
 def get_logger(logger):
     return logging.getLogger(logger)
+
+def shutdown():
+    logging.shutdown()
