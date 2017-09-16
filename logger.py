@@ -19,7 +19,7 @@
 import logging
 from time import gmtime
 
-def setup_logger(level_string, log_file):
+def setup_logger(level_string, log_file, no_file=False, no_stdout=False):
     numeric_level = getattr(logging, level_string.upper(), None)
     if not isinstance(numeric_level, int):
         raise ValueError("Invalid log level: {}".format(level_string))
@@ -34,13 +34,15 @@ def setup_logger(level_string, log_file):
     root_logger = logging.getLogger()
     root_logger.setLevel(numeric_level)
 
-    file_logger = logging.FileHandler(log_file)
-    file_logger.setFormatter(file_formatter)
-    root_logger.addHandler(file_logger)
+    if not no_file:
+        file_logger = logging.FileHandler(log_file)
+        file_logger.setFormatter(file_formatter)
+        root_logger.addHandler(file_logger)
 
-    stdout_logger = logging.StreamHandler()
-    stdout_logger.setFormatter(stdout_formatter)
-    root_logger.addHandler(stdout_logger)
+    if not no_stdout:
+        stdout_logger = logging.StreamHandler()
+        stdout_logger.setFormatter(stdout_formatter)
+        root_logger.addHandler(stdout_logger)
 
 def get_logger(logger):
     return logging.getLogger(logger)
